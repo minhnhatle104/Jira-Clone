@@ -4,16 +4,12 @@ import { UserOutlined, LockOutlined, TwitterOutlined } from '@ant-design/icons';
 import { withFormik } from 'formik'
 import * as Yup from 'yup'
 import {connect} from 'react-redux'
-import { USER_SIGNIN_API } from '../../redux/constants/CyberBugs/CyberBugs';
 import { signinCyberBugsAction } from '../../redux/actions/CyberBugsAction';
 
 function Login(props) {
     const {
-        values,
-        touched,
         errors,
         handleChange,
-        handleBlur,
         handleSubmit,
     } = props;
 
