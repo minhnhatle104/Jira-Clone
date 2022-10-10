@@ -7,7 +7,7 @@ import LoadingComponent from "./../src/components/GlobalSetting/LoadingComponent
 function App() {
   return (
     <BrowserRouter>
-      {/* <LoadingComponent/> */}
+      <LoadingComponent/>
       <Switch>
         <UserLoginTemplate exact path="/login" Component={Login}/>
       </Switch>
