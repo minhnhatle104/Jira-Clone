@@ -1,11 +1,13 @@
-import {  Route, Switch, useHistory } from 'react-router-dom';
+import {  Switch, useHistory } from 'react-router-dom';
 import './App.css';
 import Login from './pages/Login/Login';
 import { UserLoginTemplate } from './templates/HomeTemplate/UserLoginTemplate';
 import LoadingComponent from "./../src/components/GlobalSetting/LoadingComponent/LoadingComponent"
-import {useEffect,useState} from 'react'
+import {useEffect} from 'react'
 import { useDispatch } from 'react-redux';
 import Home from './pages/Home/Home';
+import { CyberbugsTemplate } from './templates/HomeTemplate/CyberbugsTemplate';
+import indexCyberbugs from "./pages/indexCyberbugs"
 
 function App() {
   const history = useHistory()
@@ -22,7 +24,7 @@ function App() {
     <>
       <LoadingComponent/>
       <Switch>
-        <Route exact path="/home" component={Home}/>
+        <CyberbugsTemplate exact path="/home" Component={indexCyberbugs}/>
         <UserLoginTemplate exact path="/login" Component={Login}/>
       </Switch>
     </>
