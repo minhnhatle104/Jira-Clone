@@ -14,5 +14,12 @@ export const  cyberBugsService = {
             url:`${DOMAIN_CYBERBUGS}/ProjectCategory`,
             method:"GET"
         })
+    },
+    createProject:(newProject)=>{
+        return Axios({
+            url:`${DOMAIN_CYBERBUGS}/Project/createProject`,
+            method:"POST",
+            data:newProject
+        })
     }
 }
