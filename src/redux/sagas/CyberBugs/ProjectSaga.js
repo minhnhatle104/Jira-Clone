@@ -11,7 +11,7 @@ function * createProjectSaga(action){
     yield delay(500)
 
     try{
-        const {data,status} = yield call(()=>cyberBugsService.createProject(action.newProject))
+        const {data,status} = yield call(()=>cyberBugsService.createProjectAuthorize(action.newProject))
         if(status === STATUS_CODE.SUCCESS){
             console.log(data)
         }
