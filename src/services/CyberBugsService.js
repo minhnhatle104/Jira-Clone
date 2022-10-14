@@ -1,5 +1,5 @@
 import Axios from "axios"
-import { DOMAIN_CYBERBUGS } from "../util/constants/settingSystem"
+import { DOMAIN_CYBERBUGS, TOKEN } from "../util/constants/settingSystem"
 
 export const  cyberBugsService = {
     signInCyberbugs:(userLogin)=>{
@@ -20,6 +20,14 @@ export const  cyberBugsService = {
             url:`${DOMAIN_CYBERBUGS}/Project/createProject`,
             method:"POST",
             data:newProject
+        })
+    },
+    createProjectAuthorize:(newProject)=>{
+        return Axios({
+            url:`${DOMAIN_CYBERBUGS}/Project/createProjectAuthorize`,
+            method:"POST",
+            data:newProject,
+            headers:{"Authorization":"Bearer "+localStorage.getItem(TOKEN)}
         })
     }
 }

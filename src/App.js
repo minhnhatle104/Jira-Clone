@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { CyberbugsTemplate } from './templates/HomeTemplate/CyberbugsTemplate';
 import indexCyberbugs from "./pages/indexCyberbugs"
 import CreateProject from './pages/CreateProject/CreateProject';
+import ProjectManagement from './pages/ProjectManagement/ProjectManagement';
 
 function App() {
   const history = useHistory()
@@ -26,6 +27,7 @@ function App() {
       <Switch>
         <CyberbugsTemplate exact path="/home" Component={indexCyberbugs}/>
         <CyberbugsTemplate exact path="/createproject" Component={CreateProject}/>
+        <CyberbugsTemplate exact path="/projectmanagement" Component={ProjectManagement}/>
         <UserLoginTemplate exact path="/login" Component={Login}/>
       </Switch>
     </>
