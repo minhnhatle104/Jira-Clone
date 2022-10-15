@@ -29,5 +29,12 @@ export const  cyberBugsService = {
             data:newProject,
             headers:{"Authorization":"Bearer "+localStorage.getItem(TOKEN)}
         })
+    },
+    getAllProject:()=>{
+        return Axios({
+            url:`${DOMAIN_CYBERBUGS}/Project/getAllProject`,
+            method:"GET",
+            headers:{"Authorization":"Bearer "+localStorage.getItem(TOKEN)}
+        })
     }
 }

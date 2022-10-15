@@ -7,6 +7,7 @@ export function * rootSaga(){
     yield all([
         CyberBugs.theoDoiSignIn(),
         ProjectCategorySaga.theoDoiGetAllProjectCategory(),
-        ProjectSaga.theoDoiCreateProject()
+        ProjectSaga.theoDoiCreateProject(),
+        ProjectSaga.theoDoiGetListProject()
     ])
 }
