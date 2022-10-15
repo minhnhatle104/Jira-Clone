@@ -3,6 +3,8 @@ import { Button, Space, Table, Tag } from 'antd';
 import ReactHtmlParser from "react-html-parser"
 import {DeleteOutlined,EditOutlined}from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
+import {  OPEN_EDIT_FORM_PROJECT } from '../../redux/constants/CyberBugs/CyberBugs';
+import FormEditProject from '../../components/Cyberbugs/Forms/FormEditProject/FormEditProject';
 
 
 
@@ -104,7 +106,12 @@ export default function ProjectManagement(props) {
             key: 'action',
             render: (text, record,index) => (
                 <div>
-                    <button className='btn mr-2 btn-primary'>
+                    <button className='btn mr-2 btn-primary' onClick={()=>{
+                        dispatch({
+                            type:OPEN_EDIT_FORM_PROJECT,
+                            Component: <FormEditProject/>
+                        })
+                    }}>
                         <EditOutlined style={{fontSize:17}}/>
                     </button>
                     <button className='btn btn-danger'>
