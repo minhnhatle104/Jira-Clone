@@ -9,6 +9,7 @@ import { CyberbugsTemplate } from './templates/HomeTemplate/CyberbugsTemplate';
 import indexCyberbugs from "./pages/indexCyberbugs"
 import CreateProject from './pages/CreateProject/CreateProject';
 import ProjectManagement from './pages/ProjectManagement/ProjectManagement';
+import DrawerCyberbugs from './HOC/Cyberbugs/DrawerCyberbugs/DrawerCyberbugs';
 
 function App() {
   const history = useHistory()
@@ -24,6 +25,7 @@ function App() {
   return (
     <>
       <LoadingComponent/>
+      <DrawerCyberbugs/>
       <Switch>
         <CyberbugsTemplate exact path="/home" Component={indexCyberbugs}/>
         <CyberbugsTemplate exact path="/createproject" Component={CreateProject}/>

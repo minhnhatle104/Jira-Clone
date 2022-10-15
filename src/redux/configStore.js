@@ -1,5 +1,6 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import createMiddleWareSaga from "redux-saga";
+import { DrawerReducer } from "./reducers/DrawerReducer";
 import { HistoryReducer } from "./reducers/HistoryReducer";
 import LoadingReducer from "./reducers/LoadingReducer";
 import { ProjectCategoryReducer } from "./reducers/ProjectCategoryReducer";
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     HistoryReducer,
     UserLoginCyberBugsReducer,
     ProjectCategoryReducer,
-    ProjectCyberbugsReducer
+    ProjectCyberbugsReducer,
+    DrawerReducer
 })
 
 const store = createStore(rootReducer,applyMiddleware(middleWareSaga));
