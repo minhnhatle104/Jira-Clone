@@ -1,39 +1,10 @@
-import React, { useState } from 'react'
-import { Button, Space, Table } from 'antd';
+import React, { useEffect, useState } from 'react'
+import { Button, Space, Table, Tag } from 'antd';
 import ReactHtmlParser from "react-html-parser"
 import {DeleteOutlined,EditOutlined}from '@ant-design/icons';
+import { useDispatch, useSelector } from 'react-redux';
 
 
-const data = [
-    {
-        "id": 7969,
-        "projectName": "stringaaaaaaa",
-        "description": "<p>day la update 2</p>",
-        "categoryId": 1,
-        "categoryName": "Dự án web",
-        "alias": "stringaaaaaaa",
-        "deleted": false
-    },
-    {
-        "id": 7998,
-        "projectName": "adadadaa",
-        "description": "fdqđqdq",
-        "categoryId": 2,
-        "categoryName": "Dự án phần mềm",
-        "alias": "adadadaa",
-        "deleted": false
-    },
-    {
-        "id": 8061,
-        "projectName": "Mike project 1",
-        "description": "<p>this is my project to test, please don't delete. Appreciate!</p>",
-        "categoryId": 1,
-        "categoryName": "Dự án web",
-        "alias": "mike-project-1",
-        "deleted": false
-    }
-   
-];
 
 export default function ProjectManagement(props) {
     const [filteredInfo, setFilteredInfo] = useState({});
@@ -56,34 +27,90 @@ export default function ProjectManagement(props) {
             columnKey: 'age',
         });
     };
+
+    const dispatch = useDispatch()
+
+    useEffect(()=>{
+        dispatch({
+            type:"GET_LIST_PROJECT_SAGA"
+        })
+    },[])
+
+    const projectList = useSelector(state => state.ProjectCyberbugsReducer.projectList)
+
+
     const columns = [
         {
             title: 'id',
             dataIndex: 'categoryId',
             key: 'categoryId',
+            sorter: (item2,item1)=>{
+                return item2.id -item1.id
+            },
+            sortDirections:["descend"],
         },
         {
             title: 'projectName',
             dataIndex: 'projectName',
             key: 'projectName',
+            sorter:(item2,item1) =>{
+                let projectName1= item1.projectName?.trim().toLowerCase()
+                let projectName2= item2.projectName?.trim().toLowerCase()
+                if(projectName2 < projectName1){
+                    return -1
+                }
+                return 1
+            }
         },
         {
-            title: 'description',
-            dataIndex: 'description',
-            key: 'description',
+            title: 'category',
+            dataIndex: 'categoryName',
+            key: 'categoryName',
+            sorter:(item2,item1) =>{
+                let categoryName1= item1.categoryName?.trim().toLowerCase()
+                let categoryName2= item2.categoryName?.trim().toLowerCase()
+                if(categoryName2 < categoryName1){
+                    return -1
+                }
+                return 1
+            }
+        },
+        // {
+        //     title: 'description',
+        //     dataIndex: 'description',
+        //     key: 'description',
+        //     render:(text,record,index)=>{
+        //         let jsxContent = ReactHtmlParser(text)
+        //         return <div key={index}>{jsxContent}</div>
+        //     }
+        // },
+        {
+            title:"creator",
+            key:"creator",
             render:(text,record,index)=>{
-                let jsxContent = ReactHtmlParser(text)
-                return <div key={index}>{jsxContent}</div>
+                return <Tag color="orange" key={index}>{record.creator?.name}</Tag>
+            },
+            sorter:(item2,item1) =>{
+                let creator1= item1.creator.name?.trim().toLowerCase()
+                let creator2= item2.creator.name?.trim().toLowerCase()
+                if(creator2 < creator1){
+                    return -1
+                }
+                return 1
             }
         },
         {
             title: 'Action',
             key: 'action',
             render: (text, record,index) => (
-              <Space size="middle">
-                <a><EditOutlined /></a>
-                <a><DeleteOutlined /></a>
-              </Space>
+                <div>
+                    <button className='btn mr-2 btn-primary'>
+                        <EditOutlined style={{fontSize:17}}/>
+                    </button>
+                    <button className='btn btn-danger'>
+                        <DeleteOutlined style={{fontSize:17}}/>
+                    </button>
+                </div>
             ),
           },
     ];
@@ -101,7 +128,7 @@ export default function ProjectManagement(props) {
                 <Button onClick={clearFilters}>Clear filters</Button>
                 <Button onClick={clearAll}>Clear filters and sorters</Button>
             </Space>
-            <Table columns={columns} rowKey={"id"} dataSource={data} onChange={handleChange} />
+            <Table columns={columns} rowKey={"id"} dataSource={projectList} onChange={handleChange} />
         </div>
     )
 }
