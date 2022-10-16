@@ -36,5 +36,13 @@ export const  cyberBugsService = {
             method:"GET",
             headers:{"Authorization":"Bearer "+localStorage.getItem(TOKEN)}
         })
+    },
+    updateProject:(projectEdit)=>{
+        return Axios({
+            url:`${DOMAIN_CYBERBUGS}/Project/updateProject?projectId=${projectEdit.id}`,
+            method:"PUT",
+            data: projectEdit,
+            headers:{"Authorization":"Bearer "+localStorage.getItem(TOKEN)}
+        })
     }
 }

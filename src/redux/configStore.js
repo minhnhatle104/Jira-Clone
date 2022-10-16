@@ -5,6 +5,7 @@ import { HistoryReducer } from "./reducers/HistoryReducer";
 import LoadingReducer from "./reducers/LoadingReducer";
 import { ProjectCategoryReducer } from "./reducers/ProjectCategoryReducer";
 import { ProjectCyberbugsReducer } from "./reducers/ProjectCyberbugsReducer";
+import { ProjectReducer } from "./reducers/ProjectReducer";
 import { UserLoginCyberBugsReducer } from "./reducers/UserCyberBugsReducer";
 import { rootSaga } from "./sagas/rootSaga";
 
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     UserLoginCyberBugsReducer,
     ProjectCategoryReducer,
     ProjectCyberbugsReducer,
-    DrawerReducer
+    DrawerReducer,
+    ProjectReducer
 })
 
 const store = createStore(rootReducer,applyMiddleware(middleWareSaga));
