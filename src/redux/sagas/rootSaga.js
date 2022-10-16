@@ -8,6 +8,7 @@ export function * rootSaga(){
         CyberBugs.theoDoiSignIn(),
         ProjectCategorySaga.theoDoiGetAllProjectCategory(),
         ProjectSaga.theoDoiCreateProject(),
-        ProjectSaga.theoDoiGetListProject()
+        ProjectSaga.theoDoiGetListProject(),
+        ProjectSaga.theoDoiUpdateProject()
     ])
 }

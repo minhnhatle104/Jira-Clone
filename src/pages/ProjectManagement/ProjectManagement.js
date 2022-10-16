@@ -3,7 +3,7 @@ import { Button, Space, Table, Tag } from 'antd';
 import ReactHtmlParser from "react-html-parser"
 import {DeleteOutlined,EditOutlined}from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import {  OPEN_EDIT_FORM_PROJECT } from '../../redux/constants/CyberBugs/CyberBugs';
+import {  GET_EDIT_PROJECT, OPEN_EDIT_FORM_PROJECT } from '../../redux/constants/CyberBugs/CyberBugs';
 import FormEditProject from '../../components/Cyberbugs/Forms/FormEditProject/FormEditProject';
 
 
@@ -12,7 +12,6 @@ export default function ProjectManagement(props) {
     const [filteredInfo, setFilteredInfo] = useState({});
     const [sortedInfo, setSortedInfo] = useState({});
     const handleChange = (pagination, filters, sorter) => {
-        console.log('Various parameters', pagination, filters, sorter);
         setFilteredInfo(filters);
         setSortedInfo(sorter);
     };
@@ -44,8 +43,8 @@ export default function ProjectManagement(props) {
     const columns = [
         {
             title: 'id',
-            dataIndex: 'categoryId',
-            key: 'categoryId',
+            dataIndex: 'id',
+            key: 'id',
             sorter: (item2,item1)=>{
                 return item2.id -item1.id
             },
@@ -107,9 +106,16 @@ export default function ProjectManagement(props) {
             render: (text, record,index) => (
                 <div>
                     <button className='btn mr-2 btn-primary' onClick={()=>{
+                        // reducer mở form project drawer
                         dispatch({
                             type:OPEN_EDIT_FORM_PROJECT,
                             Component: <FormEditProject/>
+                        })
+
+                        // reducer binding edit project lên drawer
+                        dispatch({
+                            type:GET_EDIT_PROJECT,
+                            projectEdit: record
                         })
                     }}>
                         <EditOutlined style={{fontSize:17}}/>

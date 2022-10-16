@@ -3,6 +3,7 @@ import { cyberBugsService } from "../../../services/CyberBugsService";
 import { STATUS_CODE } from "../../../util/constants/settingSystem";
 import { DISPLAY_LOADING, HIDE_LOADING } from "../../constants/LoadingConstant";
 import {history} from "../../../util/history"
+import { CLOSE_DRAWER, UPDATE_EDIT_PROJECT_SAGA } from "../../constants/CyberBugs/CyberBugs";
 
 function * createProjectSaga(action){
     yield put({
@@ -49,4 +50,33 @@ function * getListProjectSaga(){
 
 export function * theoDoiGetListProject(){
     yield takeLatest("GET_LIST_PROJECT_SAGA",getListProjectSaga)
+}
+
+function * updateProject(action){
+    yield put({
+        type:DISPLAY_LOADING
+    })
+
+    yield delay(500)
+
+    try{
+        const {data,status} = yield call(()=>cyberBugsService.updateProject(action.projectEdit))
+        if(status === STATUS_CODE.SUCCESS){
+        }
+        yield call(getListProjectSaga)
+
+        yield put({
+            type:CLOSE_DRAWER
+        })
+    }catch(err){
+        console.log(err)
+    }
+
+    yield put({
+        type:HIDE_LOADING
+    })
+}
+
+export function * theoDoiUpdateProject(){
+    yield takeLatest(UPDATE_EDIT_PROJECT_SAGA,updateProject)
 }
