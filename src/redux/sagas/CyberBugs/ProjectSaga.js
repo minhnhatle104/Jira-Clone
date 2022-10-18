@@ -3,7 +3,9 @@ import { cyberBugsService } from "../../../services/CyberBugsService";
 import { STATUS_CODE } from "../../../util/constants/settingSystem";
 import { DISPLAY_LOADING, HIDE_LOADING } from "../../constants/LoadingConstant";
 import {history} from "../../../util/history"
-import { CLOSE_DRAWER, UPDATE_EDIT_PROJECT_SAGA } from "../../constants/CyberBugs/CyberBugs";
+import { CLOSE_DRAWER, DELETE_PROJECT_SAGA, UPDATE_EDIT_PROJECT_SAGA } from "../../constants/CyberBugs/CyberBugs";
+import { projectService } from "../../../services/ProjectService";
+import {notifiFunction} from "../../../util/Notification/NotificationComponent"
 
 function * createProjectSaga(action){
     yield put({
@@ -79,4 +81,33 @@ function * updateProject(action){
 
 export function * theoDoiUpdateProject(){
     yield takeLatest(UPDATE_EDIT_PROJECT_SAGA,updateProject)
+}
+
+
+function * deleteProject(action){
+    yield put({
+        type:DISPLAY_LOADING
+    })
+
+    yield delay(500)
+
+    try{
+        const {data,status} = yield call(()=>projectService.deleteProject(action.idProject))
+        if(status === STATUS_CODE.SUCCESS){
+            notifiFunction('success',"Delete project successfully!")
+        }else{
+            notifiFunction("error","Delete project failed!")
+        }
+        yield call(getListProjectSaga)
+    }catch(err){
+        console.log(err)
+    }
+
+    yield put({
+        type:HIDE_LOADING
+    })
+}
+
+export function * theoDoiDeleteProject(){
+    yield takeLatest(DELETE_PROJECT_SAGA,deleteProject)
 }

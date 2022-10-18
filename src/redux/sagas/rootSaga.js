@@ -9,6 +9,7 @@ export function * rootSaga(){
         ProjectCategorySaga.theoDoiGetAllProjectCategory(),
         ProjectSaga.theoDoiCreateProject(),
         ProjectSaga.theoDoiGetListProject(),
-        ProjectSaga.theoDoiUpdateProject()
+        ProjectSaga.theoDoiUpdateProject(),
+        ProjectSaga.theoDoiDeleteProject()
     ])
 }
