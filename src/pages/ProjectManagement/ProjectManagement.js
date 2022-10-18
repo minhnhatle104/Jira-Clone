@@ -3,7 +3,7 @@ import { Button, Space, Table, Tag, Popconfirm, Avatar, Popover, AutoComplete } 
 import ReactHtmlParser from "react-html-parser"
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { DELETE_PROJECT_SAGA, GET_EDIT_PROJECT, OPEN_EDIT_FORM_PROJECT } from '../../redux/constants/CyberBugs/CyberBugs';
+import { ADD_USER_PROJECT_API, DELETE_PROJECT_SAGA, GET_EDIT_PROJECT, GET_USER_API, OPEN_EDIT_FORM_PROJECT } from '../../redux/constants/CyberBugs/CyberBugs';
 import FormEditProject from '../../components/Cyberbugs/Forms/FormEditProject/FormEditProject';
 
 
@@ -37,7 +37,9 @@ export default function ProjectManagement(props) {
     }, [])
 
     const projectList = useSelector(state => state.ProjectCyberbugsReducer.projectList)
+    const { userSearch } = useSelector(state => state.UserLoginCyberBugsReducer)
 
+    const [value, setValue] = useState("")
 
     const columns = [
         {
@@ -103,7 +105,6 @@ export default function ProjectManagement(props) {
             title: "members",
             key: "members",
             render: (text, record, index) => {
-                console.log(record)
                 return <div>
                     {record.members?.slice(0, 3).map((member, index) => {
                         return <Avatar src={member.avatar} key={index} />
@@ -111,9 +112,39 @@ export default function ProjectManagement(props) {
                     {record.members?.length > 3 ? <Avatar>...</Avatar> : ""}
 
                     <Popover placement="rightTop" title="Add user" trigger="click" content={() => {
-                        return <AutoComplete style={{width:"100%"}}/>
+                        return <AutoComplete style={{ width: "100%" }}
+
+                            value={value}
+
+                            options={userSearch?.map((user, index) => {
+                                return { label: user.name, value: user.userId.toString() }
+                            })}
+
+                            onChange={(value) => {
+                                setValue(value)
+                            }}
+
+                            onSelect={(valueSelect, option) => {
+                                // set giá trị trong hộp thoại => option.label
+                                setValue(option.label)
+                                // Gọi api gửi về backend
+                                dispatch({
+                                    type: ADD_USER_PROJECT_API,
+                                    userProject: {
+                                        "projectId": record.id,
+                                        "userId": valueSelect
+                                    }
+                                })
+                            }}
+
+                            onSearch={(value) => {
+                                dispatch({
+                                    type: GET_USER_API,
+                                    keyword: value
+                                })
+                            }} />
                     }}>
-                        <Button style={{borderRadius:"50%"}}>+</Button>
+                        <Button style={{ borderRadius: "50%" }}>+</Button>
                     </Popover>
                 </div>
             },
