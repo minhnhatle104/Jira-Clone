@@ -100,6 +100,7 @@ function * deleteProject(action){
         }
         yield call(getListProjectSaga)
     }catch(err){
+        notifiFunction("error","Delete project failed!")
         console.log(err)
     }
 

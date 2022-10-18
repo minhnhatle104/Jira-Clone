@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Space, Table, Tag , Popconfirm } from 'antd';
+import { Button, Space, Table, Tag, Popconfirm, Avatar, Popover, AutoComplete } from 'antd';
 import ReactHtmlParser from "react-html-parser"
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -100,6 +100,25 @@ export default function ProjectManagement(props) {
             }
         },
         {
+            title: "members",
+            key: "members",
+            render: (text, record, index) => {
+                console.log(record)
+                return <div>
+                    {record.members?.slice(0, 3).map((member, index) => {
+                        return <Avatar src={member.avatar} key={index} />
+                    })}
+                    {record.members?.length > 3 ? <Avatar>...</Avatar> : ""}
+
+                    <Popover placement="rightTop" title="Add user" trigger="click" content={() => {
+                        return <AutoComplete style={{width:"100%"}}/>
+                    }}>
+                        <Button style={{borderRadius:"50%"}}>+</Button>
+                    </Popover>
+                </div>
+            },
+        },
+        {
             title: 'Action',
             key: 'action',
             render: (text, record, index) => (
@@ -122,7 +141,7 @@ export default function ProjectManagement(props) {
 
                     <Popconfirm
                         title="Are you sure to delete this project ?"
-                        onConfirm={()=>{
+                        onConfirm={() => {
                             dispatch({
                                 type: DELETE_PROJECT_SAGA,
                                 idProject: record.id
