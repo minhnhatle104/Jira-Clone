@@ -22,3 +22,10 @@ export const UPDATE_EDIT_PROJECT_SAGA = "UPDATE_EDIT_PROJECT_SAGA"
 
 // ----------------PROJECT DELETE --------------
 export const DELETE_PROJECT_SAGA = "DELETE_PROJECT_SAGA"
+
+// ---------------GET USER -------------------
+export const GET_USER_API = "GET_USER_API"
+export const GET_USER_SEARCH = "GET_USER_SEARCH"
+
+// ---------------- ADD USER PROJECT API ----------
+export const ADD_USER_PROJECT_API = "ADD_USER_PROJECT_API"
