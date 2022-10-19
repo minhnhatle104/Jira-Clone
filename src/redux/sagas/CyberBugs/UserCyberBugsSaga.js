@@ -1,5 +1,5 @@
 import { call, delay, put, takeLatest, select } from 'redux-saga/effects'
-import { ADD_USER_PROJECT_API, GET_USER_API, GET_USER_SEARCH, USER_SIGNIN_API, USLOGIN } from "../../constants/CyberBugs/CyberBugs"
+import { ADD_USER_PROJECT_API, GET_USER_API, GET_USER_SEARCH, REMOVE_USER_PROJECT_API, USER_SIGNIN_API, USLOGIN } from "../../constants/CyberBugs/CyberBugs"
 import { cyberBugsService } from "../../../services/CyberBugsService"
 import { DISPLAY_LOADING, HIDE_LOADING } from "../../constants/LoadingConstant"
 import { TOKEN, USER_LOGIN } from '../../../util/constants/settingSystem'
@@ -81,4 +81,23 @@ function* addUserProjectSaga(action) {
 
 export function* theoDoiAddUserProject() {
     yield takeLatest(ADD_USER_PROJECT_API, addUserProjectSaga)
+}
+
+function* removeUserProjectSaga(action) {
+
+    try {
+        const { data, status } = yield call(() => userService.deleteUserFromProject(action.userProject))
+
+        yield put({
+            type: "GET_LIST_PROJECT_SAGA"
+        })
+
+    } catch (err) {
+        console.log(err.response.data)
+    }
+
+}
+
+export function* theoDoiRemoveUserProject() {
+    yield takeLatest(REMOVE_USER_PROJECT_API, removeUserProjectSaga)
 }
