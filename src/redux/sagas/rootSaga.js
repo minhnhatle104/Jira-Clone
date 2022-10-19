@@ -11,9 +11,11 @@ export function * rootSaga(){
         CyberBugs.theoDoiRemoveUserProject(),
 
         ProjectCategorySaga.theoDoiGetAllProjectCategory(),
+        
         ProjectSaga.theoDoiCreateProject(),
         ProjectSaga.theoDoiGetListProject(),
         ProjectSaga.theoDoiUpdateProject(),
         ProjectSaga.theoDoiDeleteProject(),
+        ProjectSaga.theoDoiGetProjectDetail()
     ])
 }
