@@ -29,3 +29,6 @@ export const GET_USER_SEARCH = "GET_USER_SEARCH"
 
 // ---------------- ADD USER PROJECT API ----------
 export const ADD_USER_PROJECT_API = "ADD_USER_PROJECT_API"
+
+// ----------------REMOVE USER PROJECT ------------
+export const REMOVE_USER_PROJECT_API = "REMOVE_USER_PROJECT_API"
