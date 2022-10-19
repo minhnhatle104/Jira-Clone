@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button, Space, Table, Tag, Popconfirm, Avatar, Popover, AutoComplete } from 'antd';
 import ReactHtmlParser from "react-html-parser"
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
@@ -40,6 +40,8 @@ export default function ProjectManagement(props) {
     const { userSearch } = useSelector(state => state.UserLoginCyberBugsReducer)
 
     const [value, setValue] = useState("")
+
+    const searchRef = useRef(null)
 
     const columns = [
         {
@@ -108,7 +110,7 @@ export default function ProjectManagement(props) {
                 return <div>
                     {record.members?.slice(0, 3).map((member, index) => {
                         return (
-                            <Popover  key={index} placement='top' title="Member" content={() => {
+                            <Popover key={index} placement='top' title="Member" content={() => {
                                 return <table className='table'>
                                     <thead>
                                         <th>Id</th>
@@ -120,18 +122,18 @@ export default function ProjectManagement(props) {
                                         {record.members?.map((item, index) => {
                                             return <tr key={index}>
                                                 <td>{item.userId}</td>
-                                                <td><img src={item.avatar} width="50" height="50" style={{borderRadius:"50%"}}/></td>
+                                                <td><img src={item.avatar} width="50" height="50" style={{ borderRadius: "50%" }} /></td>
                                                 <td>{item.name}</td>
                                                 <td>
-                                                    <button onClick={()=>{
+                                                    <button onClick={() => {
                                                         dispatch({
-                                                            type:REMOVE_USER_PROJECT_API,
-                                                            userProject:{
+                                                            type: REMOVE_USER_PROJECT_API,
+                                                            userProject: {
                                                                 projectId: record.id,
-                                                                userId:item.userId
+                                                                userId: item.userId
                                                             }
                                                         })
-                                                    }} className='btn btn-danger' style={{borderRadius:"50%"}}>X</button>
+                                                    }} className='btn btn-danger' style={{ borderRadius: "50%" }}>X</button>
                                                 </td>
                                             </tr>
                                         })}
@@ -172,10 +174,17 @@ export default function ProjectManagement(props) {
                             }}
 
                             onSearch={(value) => {
-                                dispatch({
-                                    type: GET_USER_API,
-                                    keyword: value
-                                })
+
+                                if(searchRef.current){
+                                    clearTimeout(searchRef.current)
+                                }
+                                searchRef.current = setTimeout(() => {
+                                    dispatch({
+                                        type: GET_USER_API,
+                                        keyword: value
+                                    })
+                                },300)
+
                             }} />
                     }}>
                         <Button style={{ borderRadius: "50%" }}>+</Button>
