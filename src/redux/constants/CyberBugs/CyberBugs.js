@@ -36,3 +36,6 @@ export const REMOVE_USER_PROJECT_API = "REMOVE_USER_PROJECT_API"
 // ---------------- GET PROJECT DETAIL ------------
 export const GET_PROJECT_DETAIL_SAGA = "GET_PROJECT_DETAIL_SAGA"
 export const GET_PROJECT_DETAIL = "GET_PROJECT_DETAIL"
+
+// ---------------- OPEN_FORM_CREATE_TASK ------------
+export const OPEN_FORM_CREATE_TASK = "OPEN_FORM_CREATE_TASK"

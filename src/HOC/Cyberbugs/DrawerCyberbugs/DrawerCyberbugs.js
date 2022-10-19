@@ -5,7 +5,7 @@ import { CLOSE_DRAWER, OPEN_DRAWER } from '../../../redux/constants/CyberBugs/Cy
 
 export default function DrawerCyberbugs() {
    
-    const {visible,size,ComponentContentDrawer,callBackSubmit} = useSelector(state => state.DrawerReducer);
+    const {visible,size,ComponentContentDrawer,callBackSubmit,title} = useSelector(state => state.DrawerReducer);
 
     const dispatch = useDispatch()
     
@@ -17,7 +17,7 @@ export default function DrawerCyberbugs() {
     return (
         <>
             <Drawer
-                title={`Drawer`}
+                title={title}
                 placement="right"
                 onClose={onClose}
                 size={size}

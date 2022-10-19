@@ -205,7 +205,8 @@ export default function ProjectManagement(props) {
                         // reducer mở form project drawer
                         dispatch({
                             type: OPEN_EDIT_FORM_PROJECT,
-                            Component: <FormEditProject />
+                            Component: <FormEditProject />,
+                            title:"Edit Project"
                         })
 
                         // reducer binding edit project lên drawer
