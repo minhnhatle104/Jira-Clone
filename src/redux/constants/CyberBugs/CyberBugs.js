@@ -32,3 +32,7 @@ export const ADD_USER_PROJECT_API = "ADD_USER_PROJECT_API"
 
 // ----------------REMOVE USER PROJECT ------------
 export const REMOVE_USER_PROJECT_API = "REMOVE_USER_PROJECT_API"
+
+// ---------------- GET PROJECT DETAIL ------------
+export const GET_PROJECT_DETAIL_SAGA = "GET_PROJECT_DETAIL_SAGA"
+export const GET_PROJECT_DETAIL = "GET_PROJECT_DETAIL"

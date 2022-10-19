@@ -5,6 +5,7 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { ADD_USER_PROJECT_API, DELETE_PROJECT_SAGA, GET_EDIT_PROJECT, GET_USER_API, OPEN_EDIT_FORM_PROJECT, REMOVE_USER_PROJECT_API } from '../../redux/constants/CyberBugs/CyberBugs';
 import FormEditProject from '../../components/Cyberbugs/Forms/FormEditProject/FormEditProject';
+import { NavLink } from 'react-router-dom';
 
 
 export default function ProjectManagement(props) {
@@ -57,6 +58,9 @@ export default function ProjectManagement(props) {
             title: 'projectName',
             dataIndex: 'projectName',
             key: 'projectName',
+            render:(text,record,index) => {
+                return <NavLink to={`/projectdetail/${record.id}`}>{text}</NavLink>
+            },
             sorter: (item2, item1) => {
                 let projectName1 = item1.projectName?.trim().toLowerCase()
                 let projectName2 = item2.projectName?.trim().toLowerCase()

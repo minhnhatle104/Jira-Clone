@@ -3,7 +3,7 @@ import { cyberBugsService } from "../../../services/CyberBugsService";
 import { STATUS_CODE } from "../../../util/constants/settingSystem";
 import { DISPLAY_LOADING, HIDE_LOADING } from "../../constants/LoadingConstant";
 import {history} from "../../../util/history"
-import { CLOSE_DRAWER, DELETE_PROJECT_SAGA, UPDATE_EDIT_PROJECT_SAGA } from "../../constants/CyberBugs/CyberBugs";
+import { CLOSE_DRAWER, DELETE_PROJECT_SAGA, GET_PROJECT_DETAIL, GET_PROJECT_DETAIL_SAGA, UPDATE_EDIT_PROJECT_SAGA } from "../../constants/CyberBugs/CyberBugs";
 import { projectService } from "../../../services/ProjectService";
 import {notifiFunction} from "../../../util/Notification/NotificationComponent"
 
@@ -111,4 +111,34 @@ function * deleteProject(action){
 
 export function * theoDoiDeleteProject(){
     yield takeLatest(DELETE_PROJECT_SAGA,deleteProject)
+}
+
+function * getProjectDetail(action){
+    yield put({
+        type:DISPLAY_LOADING
+    })
+
+    yield delay(500)
+
+    try{
+        const {data,status} = yield call(()=>projectService.getProjectDetail(action.projectId))
+
+        // Lấy dữ liệu thành công thì đưa dữ liệu lên redux
+        yield put({
+            type:GET_PROJECT_DETAIL,
+            projectDetail:data.content
+        })
+       
+    }catch(err){
+        console.log(err)
+        history.push('/projectmanagement')
+    }
+
+    yield put({
+        type:HIDE_LOADING
+    })
+}
+
+export function * theoDoiGetProjectDetail(){
+    yield takeLatest(GET_PROJECT_DETAIL_SAGA,getProjectDetail)
 }
