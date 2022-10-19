@@ -5,9 +5,15 @@ import {
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { OPEN_FORM_CREATE_TASK } from '../../redux/constants/CyberBugs/CyberBugs';
+import FormCreateTask from './Forms/FormCreateTask/FormCreateTask';
 const { Sider } = Layout;
 
 export default function SidebarCyberbugs() {
+
+	const dispatch = useDispatch()
+
 	const [collapsed, setCollapsed] = useState(false);
 	return (
 		<Sider trigger={null} collapsible collapsed={collapsed}>
@@ -23,6 +29,13 @@ export default function SidebarCyberbugs() {
 						key: '1',
 						icon: <PlusOutlined />,
 						label: 'Create Issue',
+						onClick: ()=>{
+							dispatch({
+								type:OPEN_FORM_CREATE_TASK,
+								ComponentContentDrawer: <FormCreateTask/>,
+								title:"Create Task"
+							})
+						}
 					},
 					{
 						key: '2',
