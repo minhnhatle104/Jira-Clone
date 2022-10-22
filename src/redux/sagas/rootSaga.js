@@ -4,6 +4,7 @@ import * as ProjectCategorySaga from "./CyberBugs/ProjectCategorySaga"
 import * as ProjectSaga from "./CyberBugs/ProjectSaga"
 import * as TaskTypeSaga from "./CyberBugs/TaskTypeSaga"
 import * as PrioritySaga from "./CyberBugs/PrioritySaga"
+import * as TaskSaga from "./CyberBugs/TaskSaga"
 
 export function * rootSaga(){
     yield all([
@@ -23,6 +24,8 @@ export function * rootSaga(){
 
         TaskTypeSaga.theoDoiGetAllTaskType(),
 
-        PrioritySaga.theoDoiGetAllPriority()
+        PrioritySaga.theoDoiGetAllPriority(),
+
+        TaskSaga.theoDoiCreateTask()
     ])
 }
