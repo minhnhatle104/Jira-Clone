@@ -1,6 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 import { Select, Slider } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { GET_ALL_PROJECT_SAGA } from '../../../../redux/constants/CyberBugs/ProjectConstants';
+import { GET_ALL_TASK_TYPE_SAGA } from '../../../../redux/constants/CyberBugs/TaskTypeConstants';
+import { GET_ALL_PRIORITY_SAGA } from '../../../../redux/constants/CyberBugs/PriorityConstansts';
 const { Option } = Select;
 
 const children = [];
@@ -11,10 +15,22 @@ for (let i = 10; i < 36; i++) {
 export default function FormCreateTask(props) {
     const [size, setSize] = useState('middle');
 
-    const [timeTracking,setTimeTracking] = useState({
-        timeTrackingSpent:0,
-        timeTrackingRemaining:0
+    const [timeTracking, setTimeTracking] = useState({
+        timeTrackingSpent: 0,
+        timeTrackingRemaining: 0
     })
+
+    const dispatch = useDispatch()
+
+    const { arrProject } = useSelector(state => state.ProjectCyberbugsReducer)
+    const { arrTaskType } = useSelector(state => state.TaskTypeReducer)
+    const { arrPriority } = useSelector(state => state.PriorityReducer)
+    
+    useEffect(() => {
+        dispatch({ type: GET_ALL_PROJECT_SAGA })
+        dispatch({ type: GET_ALL_TASK_TYPE_SAGA })
+        dispatch({ type: GET_ALL_PRIORITY_SAGA })
+    }, [])
 
     const {
         setFieldValue
@@ -35,8 +51,9 @@ export default function FormCreateTask(props) {
             <div className='form-group'>
                 <p>Project</p>
                 <select name='projectId' className='form-control'>
-                    <option value="54">Project</option>
-                    <option value="55">Project</option>
+                    {arrProject.map((project, index) => {
+                        return <option key={index} value={project.id}>{project.projectName}</option>
+                    })}
                 </select>
             </div>
             <div className='form-group'>
@@ -44,15 +61,17 @@ export default function FormCreateTask(props) {
                     <div className='col-6'>
                         <p>Priority</p>
                         <select name='priorityId' className='form-control'>
-                            <option>High</option>
-                            <option>Low</option>
+                            {arrPriority.map((priority, index) => {
+                                return <option key={index} value={priority.priorityId}>{priority.priority}</option>
+                            })}
                         </select>
                     </div>
                     <div className='col-6'>
                         <p>Task type</p>
                         <select name='typeId' className='form-control'>
-                            <option>New Task</option>
-                            <option>Bugs</option>
+                            {arrTaskType.map((taskType, index) => {
+                                return <option key={index} value={taskType.id}>{taskType.taskType}</option>
+                            })}
                         </select>
                     </div>
                 </div>
@@ -82,29 +101,29 @@ export default function FormCreateTask(props) {
                     </div>
                     <div className='col-6'>
                         <p>Time tracking</p>
-                        <Slider defaultValue={30} value={timeTracking.timeTrackingSpent} max={Number(timeTracking.timeTrackingSpent)+Number(timeTracking.timeTrackingRemaining)}/>
+                        <Slider defaultValue={30} value={timeTracking.timeTrackingSpent} max={Number(timeTracking.timeTrackingSpent) + Number(timeTracking.timeTrackingRemaining)} />
                         <div className='row'>
                             <div className='col-6 text-left font-weight-bold'>{timeTracking.timeTrackingSpent}h logged</div>
                             <div className='col-6 text-right font-weight-bold'>{timeTracking.timeTrackingRemaining}h remaining</div>
                         </div>
-                        <div className='row' style={{marginTop:'5px'}}>
+                        <div className='row' style={{ marginTop: '5px' }}>
                             <div className='col-6'>
                                 <p>Time spent</p>
-                                <input type="number" defaultValue="0" min="0" className="form-control" name="timeTrackingSpent" onChange={(e)=>{
+                                <input type="number" defaultValue="0" min="0" className="form-control" name="timeTrackingSpent" onChange={(e) => {
                                     setTimeTracking({
                                         ...timeTracking,
-                                        timeTrackingSpent:e.target.value
+                                        timeTrackingSpent: e.target.value
                                     })
-                                }}/>
+                                }} />
                             </div>
                             <div className='col-6'>
                                 <p>Time remaining</p>
-                                <input type="number" defaultValue="0" min="0" className="form-control" name="timeTrackingRemaining" onChange={(e)=>{
+                                <input type="number" defaultValue="0" min="0" className="form-control" name="timeTrackingRemaining" onChange={(e) => {
                                     setTimeTracking({
                                         ...timeTracking,
-                                        timeTrackingRemaining:e.target.value
+                                        timeTrackingRemaining: e.target.value
                                     })
-                                }}/>
+                                }} />
                             </div>
                         </div>
                     </div>

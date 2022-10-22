@@ -7,6 +7,8 @@ import { ProjectCategoryReducer } from "./reducers/ProjectCategoryReducer";
 import { ProjectCyberbugsReducer } from "./reducers/ProjectCyberbugsReducer";
 import { ProjectReducer } from "./reducers/ProjectReducer";
 import { UserLoginCyberBugsReducer } from "./reducers/UserCyberBugsReducer";
+import {TaskTypeReducer} from "./reducers/TaskTypeReducer";
+import {PriorityReducer} from "./reducers/PriorityReducer";
 import { rootSaga } from "./sagas/rootSaga";
 
 const middleWareSaga = createMiddleWareSaga()
@@ -18,7 +20,9 @@ const rootReducer = combineReducers({
     ProjectCategoryReducer,
     ProjectCyberbugsReducer,
     DrawerReducer,
-    ProjectReducer
+    ProjectReducer,
+    TaskTypeReducer,
+    PriorityReducer
 })
 
 const store = createStore(rootReducer,applyMiddleware(middleWareSaga));

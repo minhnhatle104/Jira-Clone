@@ -6,6 +6,7 @@ import {history} from "../../../util/history"
 import { CLOSE_DRAWER, DELETE_PROJECT_SAGA, GET_PROJECT_DETAIL, GET_PROJECT_DETAIL_SAGA, UPDATE_EDIT_PROJECT_SAGA } from "../../constants/CyberBugs/CyberBugs";
 import { projectService } from "../../../services/ProjectService";
 import {notifiFunction} from "../../../util/Notification/NotificationComponent"
+import { GET_ALL_PROJECT, GET_ALL_PROJECT_SAGA } from "../../constants/CyberBugs/ProjectConstants";
 
 function * createProjectSaga(action){
     yield put({
@@ -141,4 +142,35 @@ function * getProjectDetail(action){
 
 export function * theoDoiGetProjectDetail(){
     yield takeLatest(GET_PROJECT_DETAIL_SAGA,getProjectDetail)
+}
+
+
+function * getAllProject(action){
+    yield put({
+        type:DISPLAY_LOADING
+    })
+
+    yield delay(500)
+
+    try{
+        const {data,status} = yield call(()=>projectService.getAllProject())
+
+        // Lấy dữ liệu thành công thì đưa dữ liệu lên redux
+        yield put({
+            type:GET_ALL_PROJECT,
+            arrProject:data.content
+        })
+       
+    }catch(err){
+        console.log(err)
+        history.push('/projectmanagement')
+    }
+
+    yield put({
+        type:HIDE_LOADING
+    })
+}
+
+export function * theoDoiGetAllProject(){
+    yield takeLatest(GET_ALL_PROJECT_SAGA,getAllProject)
 }
