@@ -1,5 +1,8 @@
+import { GET_ALL_PROJECT } from "../constants/CyberBugs/ProjectConstants"
+
 const initialState = {
-  projectList: []
+  projectList: [],
+  arrProject: [] // Get all project cho dropdown
 }
 
 export const ProjectCyberbugsReducer = (state = initialState, action) => {
@@ -7,6 +10,10 @@ export const ProjectCyberbugsReducer = (state = initialState, action) => {
     case "GET_LIST_PROJECT": {
       state.projectList = action.projectList
       return { ...state }
+    }
+    case GET_ALL_PROJECT:{
+      state.arrProject= action.arrProject
+      return {...state}
     }
     default:
       return { ...state }
