@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
-import { Select } from 'antd';
+import { Select, Slider } from 'antd';
 const { Option } = Select;
 
 const children = [];
@@ -11,7 +11,10 @@ for (let i = 10; i < 36; i++) {
 export default function FormCreateTask(props) {
     const [size, setSize] = useState('middle');
 
-
+    const [timeTracking,setTimeTracking] = useState({
+        timeTrackingSpent:0,
+        timeTrackingRemaining:0
+    })
 
     const {
         setFieldValue
@@ -70,6 +73,40 @@ export default function FormCreateTask(props) {
                         >
                             {children}
                         </Select>
+                        <div className='row mt-3'>
+                            <div className='col-12'>
+                                <p>Original Estimate</p>
+                                <input type="number" defaultValue="0" min="0" className="form-control" name="originalEstimate" />
+                            </div>
+                        </div>
+                    </div>
+                    <div className='col-6'>
+                        <p>Time tracking</p>
+                        <Slider defaultValue={30} value={timeTracking.timeTrackingSpent} max={Number(timeTracking.timeTrackingSpent)+Number(timeTracking.timeTrackingRemaining)}/>
+                        <div className='row'>
+                            <div className='col-6 text-left font-weight-bold'>{timeTracking.timeTrackingSpent}h logged</div>
+                            <div className='col-6 text-right font-weight-bold'>{timeTracking.timeTrackingRemaining}h remaining</div>
+                        </div>
+                        <div className='row' style={{marginTop:'5px'}}>
+                            <div className='col-6'>
+                                <p>Time spent</p>
+                                <input type="number" defaultValue="0" min="0" className="form-control" name="timeTrackingSpent" onChange={(e)=>{
+                                    setTimeTracking({
+                                        ...timeTracking,
+                                        timeTrackingSpent:e.target.value
+                                    })
+                                }}/>
+                            </div>
+                            <div className='col-6'>
+                                <p>Time remaining</p>
+                                <input type="number" defaultValue="0" min="0" className="form-control" name="timeTrackingRemaining" onChange={(e)=>{
+                                    setTimeTracking({
+                                        ...timeTracking,
+                                        timeTrackingRemaining:e.target.value
+                                    })
+                                }}/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
