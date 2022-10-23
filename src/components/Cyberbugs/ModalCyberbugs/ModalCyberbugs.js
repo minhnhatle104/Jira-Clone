@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import ReactHtmlParser from "react-html-parser"
 import { GET_ALL_STATUS_SAGA } from '../../../redux/constants/CyberBugs/StatusConstants'
 import { GET_ALL_PRIORITY_SAGA } from '../../../redux/constants/CyberBugs/PriorityConstansts'
+import { UPDATE_STATUS_TASK_SAGA } from '../../../redux/constants/CyberBugs/TaskConstants'
 
 export default function ModalCyberbugs(props) {
     const { taskDetailModal } = useSelector(state => state.TaskReducer)
@@ -173,7 +174,18 @@ export default function ModalCyberbugs(props) {
                                     <div className="col-4">
                                         <div className="status">
                                             <h6>STATUS</h6>
-                                            <select className="custom-select" value={taskDetailModal.statusId}>
+                                            <select className="custom-select" value={taskDetailModal.statusId} onChange={(e)=>{
+                                                const action = {
+                                                    type:UPDATE_STATUS_TASK_SAGA,
+                                                    taskUpdateStatus:{
+                                                        taskId:taskDetailModal.taskId,
+                                                        statusId:e.target.value,
+                                                        projectId:taskDetailModal.projectId
+                                                    }
+                                                }
+
+                                                dispatch(action)
+                                            }}>
                                                 {arrStatus.map((status, index) => {
                                                     return <option key={index} value={status.statusId}>{status.statusName}</option>
                                                 })}
