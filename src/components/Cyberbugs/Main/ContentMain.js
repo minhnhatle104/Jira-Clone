@@ -1,7 +1,10 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { GET_TASK_DETAIL_SAGA } from '../../../redux/constants/CyberBugs/TaskConstants'
 
 export default function ContentMain(props) {
 	const { projectDetail } = props
+	const dispatch = useDispatch()
 
 	const renderCard = () => {
 		console.log("project:", projectDetail)
@@ -13,7 +16,13 @@ export default function ContentMain(props) {
 				</div>
 				<ul className="list-group list-group-flush">
 					{taskListDetail.lstTaskDeTail.map((task, index) => {
-						return <li key={index} className="list-group-item pb-2" data-toggle="modal" data-target="#infoModal" style={{ cursor: 'pointer' }}>
+						return <li key={index} className="list-group-item pb-2" data-toggle="modal" data-target="#infoModal"
+							style={{ cursor: 'pointer' }} onClick={() => {
+								dispatch({
+									type: GET_TASK_DETAIL_SAGA,
+									taskId: task.taskId
+								})
+							}}>
 							<p className='font-weight-bold'>
 								{task.taskName}
 							</p>
