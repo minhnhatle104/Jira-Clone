@@ -7,6 +7,7 @@ import { CLOSE_DRAWER, DELETE_PROJECT_SAGA, GET_PROJECT_DETAIL, GET_PROJECT_DETA
 import { projectService } from "../../../services/ProjectService";
 import {notifiFunction} from "../../../util/Notification/NotificationComponent"
 import { GET_ALL_PROJECT, GET_ALL_PROJECT_SAGA } from "../../constants/CyberBugs/ProjectConstants";
+import { GET_USER_BY_PROJECT_ID_SAGA } from "../../constants/CyberBugs/UserConstants";
 
 function * createProjectSaga(action){
     yield put({
@@ -159,6 +160,11 @@ function * getAllProject(action){
         yield put({
             type:GET_ALL_PROJECT,
             arrProject:data.content
+        })
+
+        yield put({
+            type:GET_USER_BY_PROJECT_ID_SAGA,
+            projectId:data.content[0].id
         })
        
     }catch(err){
