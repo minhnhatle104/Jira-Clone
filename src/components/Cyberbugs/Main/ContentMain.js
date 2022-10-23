@@ -1,39 +1,40 @@
 import React from 'react'
 
 export default function ContentMain(props) {
-	const {projectDetail} = props
+	const { projectDetail } = props
 
-	const renderCard = () =>{
-		return projectDetail.lstTask?.map((item,index)=>{
-			return <div className="card" style={{ width: '17rem', height: '25rem' }} key={index}>
-			<div className="card-header">
-				BACKLOG 3
-			</div>
-			<ul className="list-group list-group-flush">
-				<li className="list-group-item" data-toggle="modal" data-target="#infoModal" style={{ cursor: 'pointer' }}>
-					<p>
-						Each issue has a single reporter but can have multiple
-						assignees
-					</p>
-					<div className="block" style={{ display: 'flex' }}>
-						<div className="block-left">
-							<i className="fa fa-bookmark" />
-							<i className="fa fa-arrow-up" />
-						</div>
-						<div className="block-right">
-							<div className="avatar-group" style={{ display: 'flex' }}>
-								<div className="avatar">
-									<img src={require("../../../assets/img/download (1).jfif")} alt="ava1" />
+	const renderCard = () => {
+		console.log("project:", projectDetail)
+		return projectDetail.lstTask?.map((taskListDetail, index) => {
+			console.log("task List:", taskListDetail.lstTaskDeTail)
+			return <div className="card" style={{ width: '17rem', height: 'auto' }} key={index}>
+				<div className="card-header">
+					{taskListDetail.statusName}
+				</div>
+				<ul className="list-group list-group-flush">
+					{taskListDetail.lstTaskDeTail.map((task, index) => {
+						return <li key={index} className="list-group-item pb-2" data-toggle="modal" data-target="#infoModal" style={{ cursor: 'pointer' }}>
+							<p className='font-weight-bold'>
+								{task.taskName}
+							</p>
+							<div className="block" style={{ display: 'flex' }}>
+								<div className="block-left">
+									<p className='text-danger'>{task.priorityTask.priority}</p>
 								</div>
-								<div className="avatar">
-									<img src={require("../../../assets/img/download (2).jfif")} alt="ava2" />
+								<div className="block-right">
+									<div className="avatar-group" style={{ display: 'flex' }}>
+										{task.assigness.map((mem, index) => {
+											return <div className="avatar" key={index}>
+												<img src={mem.avatar} alt={mem.avatar} />
+											</div>
+										})}
+									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-				</li>
-			</ul>
-		</div>
+						</li>
+					})}
+				</ul>
+			</div>
 		})
 	}
 

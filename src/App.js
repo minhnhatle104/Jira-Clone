@@ -6,10 +6,11 @@ import LoadingComponent from "./../src/components/GlobalSetting/LoadingComponent
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { CyberbugsTemplate } from './templates/HomeTemplate/CyberbugsTemplate';
-import IndexCyberbugs from "./pages/IndexCyberbugs"
+
 import CreateProject from './pages/CreateProject/CreateProject';
 import ProjectManagement from './pages/ProjectManagement/ProjectManagement';
 import DrawerCyberbugs from './HOC/Cyberbugs/DrawerCyberbugs/DrawerCyberbugs';
+import IndexCyberbugs from './pages/ProjectDetail/IndexCyberbugs';
 
 function App() {
   const history = useHistory()
