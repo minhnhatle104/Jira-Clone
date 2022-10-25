@@ -1,17 +1,24 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import ReactHtmlParser from "react-html-parser"
 import { GET_ALL_STATUS_SAGA } from '../../../redux/constants/CyberBugs/StatusConstants'
 import { GET_ALL_PRIORITY_SAGA } from '../../../redux/constants/CyberBugs/PriorityConstansts'
 import { CHANGE_TASK_MODAL, UPDATE_STATUS_TASK_SAGA } from '../../../redux/constants/CyberBugs/TaskConstants'
 import { GET_ALL_TASK_TYPE_SAGA } from '../../../redux/constants/CyberBugs/TaskTypeConstants'
+import { Editor } from '@tinymce/tinymce-react'
 
 export default function ModalCyberbugs(props) {
     const { taskDetailModal } = useSelector(state => state.TaskReducer)
     const { arrStatus } = useSelector(state => state.StatusReducer)
     const { arrPriority } = useSelector(state => state.PriorityReducer)
-    const {arrTaskType} = useSelector(state => state.TaskTypeReducer)
+    const { arrTaskType } = useSelector(state => state.TaskTypeReducer)
+
     const dispatch = useDispatch()
+
+
+    const [visibleEditor, setVisibleEditor] = useState(false)
+    const [historyContent,setHistoryContent] = useState(taskDetailModal.description)
+    const [content,setContent] = useState(taskDetailModal.description)
 
     useEffect(() => {
         dispatch({ type: GET_ALL_STATUS_SAGA })
@@ -19,9 +26,60 @@ export default function ModalCyberbugs(props) {
         dispatch({ type: GET_ALL_TASK_TYPE_SAGA })
     }, [])
 
+    const {
+        setFieldValue
+    } = props;
+
     const renderDescription = () => {
         const jsxDescription = ReactHtmlParser(taskDetailModal.description)
-        return jsxDescription
+        return <div>
+            {visibleEditor ? <div>
+                <Editor
+                    name="description"
+                    apiKey='your-api-key'
+                    onEditorChange={(content, editor) => {
+                        setContent(content)
+                    }}
+                    initialValue={taskDetailModal.description}
+                    init={{
+                        height: 500,
+                        menubar: false,
+                        plugins: [
+                            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                            'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+                        ],
+                        toolbar: 'undo redo | blocks | ' +
+                            'bold italic forecolor | alignleft aligncenter ' +
+                            'alignright alignjustify | bullist numlist outdent indent | ' +
+                            'removeformat | help',
+                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                    }}
+                />  
+                <button className='btn btn-primary m-2' onClick={()=>{
+                     dispatch({
+                        type:CHANGE_TASK_MODAL,
+                        name:"description",
+                        value:content
+                    })
+                    setVisibleEditor(false)
+                }}>Save</button>
+                <button className='btn btn-primary m-2' onClick={()=>{
+                    dispatch({
+                        type:CHANGE_TASK_MODAL,
+                        name:"description",
+                        value:historyContent
+                    })
+                    setVisibleEditor(false)
+                }}>Cancel</button>
+
+                </div>: <div onClick={() => {
+                    setHistoryContent(taskDetailModal.description)
+                    setVisibleEditor(!visibleEditor)}
+                    }>{jsxDescription}</div>
+            }
+        </div>
+
     }
 
     const handleChange = (e) => {
@@ -102,7 +160,7 @@ export default function ModalCyberbugs(props) {
                             <div className="task-title">
                                 <i className="fa fa-bookmark" />
                                 <select name='typeId' value={taskDetailModal.typeId} onChange={handleChange}>
-                                    {arrTaskType.map((tp,index)=>{
+                                    {arrTaskType.map((tp, index) => {
                                         return <option key={index} value={tp.id}>{tp.taskType}</option>
                                     })}
                                 </select>
