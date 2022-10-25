@@ -30,6 +30,7 @@ export function * rootSaga(){
 
         TaskSaga.theoDoiCreateTask(),
         TaskSaga.theoDoiGetTaskDetail(),
+        TaskSaga.theoDoiUpdateStatusTask(),
 
         StatusSaga.theoDoiGetAllStatus()
     ])

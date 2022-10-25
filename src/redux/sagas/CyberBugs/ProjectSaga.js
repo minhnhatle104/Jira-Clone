@@ -115,7 +115,7 @@ export function * theoDoiDeleteProject(){
     yield takeLatest(DELETE_PROJECT_SAGA,deleteProject)
 }
 
-function * getProjectDetail(action){
+function * getProjectDetailSaga(action){
     yield put({
         type:DISPLAY_LOADING
     })
@@ -142,7 +142,7 @@ function * getProjectDetail(action){
 }
 
 export function * theoDoiGetProjectDetail(){
-    yield takeLatest(GET_PROJECT_DETAIL_SAGA,getProjectDetail)
+    yield takeLatest(GET_PROJECT_DETAIL_SAGA,getProjectDetailSaga)
 }
 
 
