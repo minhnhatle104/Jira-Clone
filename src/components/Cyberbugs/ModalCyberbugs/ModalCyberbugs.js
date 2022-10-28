@@ -3,22 +3,26 @@ import { useSelector, useDispatch } from 'react-redux'
 import ReactHtmlParser from "react-html-parser"
 import { GET_ALL_STATUS_SAGA } from '../../../redux/constants/CyberBugs/StatusConstants'
 import { GET_ALL_PRIORITY_SAGA } from '../../../redux/constants/CyberBugs/PriorityConstansts'
-import { CHANGE_TASK_MODAL, UPDATE_STATUS_TASK_SAGA } from '../../../redux/constants/CyberBugs/TaskConstants'
+import { CHANGE_ASSIGNESS, CHANGE_TASK_MODAL, REMOVE_USER_ASSIGN, UPDATE_STATUS_TASK_SAGA } from '../../../redux/constants/CyberBugs/TaskConstants'
 import { GET_ALL_TASK_TYPE_SAGA } from '../../../redux/constants/CyberBugs/TaskTypeConstants'
 import { Editor } from '@tinymce/tinymce-react'
+import { Select } from 'antd'
+
+const { Option } = Select;
 
 export default function ModalCyberbugs(props) {
     const { taskDetailModal } = useSelector(state => state.TaskReducer)
     const { arrStatus } = useSelector(state => state.StatusReducer)
     const { arrPriority } = useSelector(state => state.PriorityReducer)
     const { arrTaskType } = useSelector(state => state.TaskTypeReducer)
+    const { projectDetail } = useSelector(state => state.ProjectReducer)
 
     const dispatch = useDispatch()
 
 
     const [visibleEditor, setVisibleEditor] = useState(false)
-    const [historyContent,setHistoryContent] = useState(taskDetailModal.description)
-    const [content,setContent] = useState(taskDetailModal.description)
+    const [historyContent, setHistoryContent] = useState(taskDetailModal.description)
+    const [content, setContent] = useState(taskDetailModal.description)
 
     useEffect(() => {
         dispatch({ type: GET_ALL_STATUS_SAGA })
@@ -55,28 +59,29 @@ export default function ModalCyberbugs(props) {
                             'removeformat | help',
                         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
                     }}
-                />  
-                <button className='btn btn-primary m-2' onClick={()=>{
-                     dispatch({
-                        type:CHANGE_TASK_MODAL,
-                        name:"description",
-                        value:content
+                />
+                <button className='btn btn-primary m-2' onClick={() => {
+                    dispatch({
+                        type: CHANGE_TASK_MODAL,
+                        name: "description",
+                        value: content
                     })
                     setVisibleEditor(false)
                 }}>Save</button>
-                <button className='btn btn-primary m-2' onClick={()=>{
+                <button className='btn btn-primary m-2' onClick={() => {
                     dispatch({
-                        type:CHANGE_TASK_MODAL,
-                        name:"description",
-                        value:historyContent
+                        type: CHANGE_TASK_MODAL,
+                        name: "description",
+                        value: historyContent
                     })
                     setVisibleEditor(false)
                 }}>Cancel</button>
 
-                </div>: <div onClick={() => {
-                    setHistoryContent(taskDetailModal.description)
-                    setVisibleEditor(!visibleEditor)}
-                    }>{jsxDescription}</div>
+            </div> : <div onClick={() => {
+                setHistoryContent(taskDetailModal.description)
+                setVisibleEditor(!visibleEditor)
+            }
+            }>{jsxDescription}</div>
             }
         </div>
 
@@ -281,21 +286,55 @@ export default function ModalCyberbugs(props) {
                                         </div>
                                         <div className="assignees">
                                             <h6>ASSIGNEES</h6>
-                                            <div style={{ display: 'flex' }}>
+                                            <div className='row'>
                                                 {taskDetailModal.assigness.map((user, index) => {
-                                                    return <div style={{ display: 'flex' }} className="item" key={index}>
+                                                    return <div className='col-6 mt-2 mb-2 item' key={index}>
                                                         <div className="avatar">
                                                             <img src={user.avatar} alt={user.avatar} />
                                                         </div>
                                                         <p className="name mt-1 ml-1">
                                                             {user.name}
-                                                            <i className="fa fa-times" style={{ marginLeft: 5 }} />
+                                                            <i className="fa fa-times" style={{ marginLeft: 5,cursor:"pointer"}} onClick={()=>{
+                                                                dispatch({
+                                                                    type:REMOVE_USER_ASSIGN,
+                                                                    userId:user.id
+                                                                })
+                                                            }}/>
                                                         </p>
                                                     </div>
                                                 })}
 
-                                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                    <i className="fa fa-plus" style={{ marginRight: 5 }} /><span>Add more</span>
+                                                <div className='col-6 mt-2 mb-2'>
+                                                    <Select
+                                                        options={projectDetail.members?.filter(mem=>{
+                                                            let index = taskDetailModal.assigness?.findIndex(us => us.id === mem.userId)
+                                                            if(index!==-1){
+                                                                return false
+                                                            }
+                                                            return true
+                                                        }).map((mem,index)=>{
+                                                            return {value:mem.userId,label:mem.name}
+                                                        })}
+                                                        optionFilterProp="label"
+                                                        style={{width:"100%"}}
+                                                        name="lstUser"
+                                                        value="+ Add more"
+                                                        className='form-control'
+                                                        onSelect={(value)=>{
+                                                            if(value == "0"){
+                                                                return;
+                                                            }
+                                                            let userSelected = projectDetail.members.find(mem => mem.userId == value)
+                                                            userSelected = {...userSelected,id:userSelected.userId}
+                                                            //dispatch Reducer
+                                                            dispatch({
+                                                                type:CHANGE_ASSIGNESS,
+                                                                userSelected
+                                                            })
+                                                        }}
+                                                    >
+                                                        
+                                                    </Select>
                                                 </div>
                                             </div>
                                         </div>
