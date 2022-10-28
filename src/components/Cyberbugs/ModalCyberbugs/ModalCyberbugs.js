@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import ReactHtmlParser from "react-html-parser"
 import { GET_ALL_STATUS_SAGA } from '../../../redux/constants/CyberBugs/StatusConstants'
 import { GET_ALL_PRIORITY_SAGA } from '../../../redux/constants/CyberBugs/PriorityConstansts'
-import { CHANGE_ASSIGNESS, CHANGE_TASK_MODAL, REMOVE_USER_ASSIGN, UPDATE_STATUS_TASK_SAGA } from '../../../redux/constants/CyberBugs/TaskConstants'
+import { CHANGE_ASSIGNESS, CHANGE_TASK_MODAL, HANDLE_CHANGE_POST_API_SAGA, REMOVE_USER_ASSIGN, UPDATE_STATUS_TASK_SAGA } from '../../../redux/constants/CyberBugs/TaskConstants'
 import { GET_ALL_TASK_TYPE_SAGA } from '../../../redux/constants/CyberBugs/TaskTypeConstants'
 import { Editor } from '@tinymce/tinymce-react'
 import { Select } from 'antd'
@@ -61,19 +61,25 @@ export default function ModalCyberbugs(props) {
                     }}
                 />
                 <button className='btn btn-primary m-2' onClick={() => {
+
                     dispatch({
-                        type: CHANGE_TASK_MODAL,
+                        type:HANDLE_CHANGE_POST_API_SAGA,
+                        actionType:CHANGE_TASK_MODAL,
                         name: "description",
                         value: content
                     })
+
                     setVisibleEditor(false)
                 }}>Save</button>
                 <button className='btn btn-primary m-2' onClick={() => {
+
                     dispatch({
-                        type: CHANGE_TASK_MODAL,
+                        type:HANDLE_CHANGE_POST_API_SAGA,
+                        actionType:CHANGE_TASK_MODAL,
                         name: "description",
                         value: historyContent
                     })
+
                     setVisibleEditor(false)
                 }}>Cancel</button>
 
@@ -89,8 +95,10 @@ export default function ModalCyberbugs(props) {
 
     const handleChange = (e) => {
         const { name, value } = e.target
+
         dispatch({
-            type: CHANGE_TASK_MODAL,
+            type:HANDLE_CHANGE_POST_API_SAGA,
+            actionType:CHANGE_TASK_MODAL,
             name,
             value
         })
@@ -295,8 +303,10 @@ export default function ModalCyberbugs(props) {
                                                         <p className="name mt-1 ml-1">
                                                             {user.name}
                                                             <i className="fa fa-times" style={{ marginLeft: 5,cursor:"pointer"}} onClick={()=>{
+
                                                                 dispatch({
-                                                                    type:REMOVE_USER_ASSIGN,
+                                                                    type:HANDLE_CHANGE_POST_API_SAGA,
+                                                                    actionType:REMOVE_USER_ASSIGN,
                                                                     userId:user.id
                                                                 })
                                                             }}/>
@@ -326,9 +336,10 @@ export default function ModalCyberbugs(props) {
                                                             }
                                                             let userSelected = projectDetail.members.find(mem => mem.userId == value)
                                                             userSelected = {...userSelected,id:userSelected.userId}
-                                                            //dispatch Reducer
+
                                                             dispatch({
-                                                                type:CHANGE_ASSIGNESS,
+                                                                type:HANDLE_CHANGE_POST_API_SAGA,
+                                                                actionType:CHANGE_ASSIGNESS,
                                                                 userSelected
                                                             })
                                                         }}
